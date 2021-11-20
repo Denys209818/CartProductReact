@@ -7,15 +7,27 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import { getCartProducts } from "./actions/Login/loginAction";
+import { getCartProducts, loginUser } from "./actions/Login/loginAction";
+import AdminLayout from "./layouts/AdminLayout/AdminLayout";
+import productAction from "./actions/Product";
 
 
 const App = () => {
+  
   var dispatch = useDispatch();
+  dispatch(productAction())
+        .then(data => {
+          
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
   var token = localStorage.getItem('token');
   if(token) 
   {
-    dispatch({type: CLEAR_CART})
+    loginUser(token);
+    dispatch({type: CLEAR_CART});
     var userData = jwt.decode(token);
     dispatch({type: LOGIN_USER, payload: {
       token: token,
@@ -27,10 +39,12 @@ const App = () => {
       }
     }});
     dispatch(getCartProducts(userData));
+
   }
 
   return (<>
        <Switch>
+       <Route name="Admin" path="/admin" render={(props) => <AdminLayout {...props} />}/>
        <Route name="Default" path="/" render={(props) => <DefaultLayout {...props} />}/>
      </Switch>
   </>);

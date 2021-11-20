@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { CLEAR_CART, LOGOUT } from "../../../constants/reduxConstants";
+import { ADD_ITEM_TO_CART, CLEAR_CART, LOGOUT, REMOVE_ITEM_FROM_CART } from "../../../constants/reduxConstants";
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { useEffect, useState } from "react";
 import groupBy from 'group-by';
 import axiosService from "../../../services/axiosService";
+import { removeFromCart } from "../../../actions/Product";
+import { addToCartItem, removeItemFromCart } from "../../../actions/CartItems/cartItems";
 
 
 const Navbar = () => 
@@ -23,16 +25,45 @@ const Navbar = () =>
     const header = (
         <img alt="Card" src="showcase/demo/images/usercard.png" onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
     );
-    const footer = (
+
+    const onFooterCardClick =(e, id) => 
+    {
+        e.preventDefault();
+        dispatch(removeFromCart(id));
+    }
+
+    const onChangeCount = (e, id, count) => 
+    {
+        var newCount = e.target.value;
+        if(e.target.value != 0) 
+        {
+            if(count < newCount) 
+            {
+                dispatch(addToCartItem(newCount, id));
+                return;
+            }
+        else if(count > newCount)
+        {
+            dispatch(removeItemFromCart(newCount, id));
+                return;
+            }
+        }
+        }
+
+    const footer = (id, count) => {
+        return(
         <span>
             <div className="d-block d-flex justify-content-center">
                 <Button label="Оформити замовлення" icon="pi pi-check" />
             </div>
+            <div className="d-block d-flex justify-content-center my-3">
+                <input type="number" value={count} onChange={(e) => onChangeCount(e, id, count)}/>
+            </div>
             <div className="d-block mt-2 d-flex justify-content-center">
-            <Button label="Скасувати" icon="pi pi-times" className="p-button-secondary p-ml-2" />
+            <Button label="Скасувати" onClick={(e) => onFooterCardClick(e, id)} icon="pi pi-times" className="p-button-secondary p-ml-2" />
             </div>
         </span>
-    );
+        )};
     
     const onLogoutHandler = (e) => 
     {
@@ -84,8 +115,8 @@ const Navbar = () =>
                             return <div key={index} className="col-md-12 mt-3">
                             <div className="container d-flex justify-content-center">
                                 <Card title={product.name} 
-                                subTitle={product.price + " грн\n" + ". Кількість одиниць: " + product.count}
-                                style={{ width: '25em' }} footer={footer} header={<img alt="Card" 
+                                subTitle={(parseInt(product.price)*parseInt(product.count)) + " грн\n"}
+                                style={{ width: '25em' }} footer={() => footer(product.id, product.count)} header={<img alt="Card" 
                                 src={`images/` + product.image} onError={(e) => 
                                 e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />}>
                                     <p className="p-m-0" style={{ lineHeight: '1.5' }}>

@@ -7,3 +7,14 @@ export const CREATE_LIST = 'CREATE_LIST';
 
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const CLEAR_CART = 'CLEAR_CART';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+
+export const ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
+export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
+
+export const REMOVE_ITEM_FROM_PRODUCTS = 'REMOVE_ITEM_FROM_PRODUCTS';
+
+export const ADD_TO_EDIT = 'ADD_TO_EDIT';
+export const EDIT_PRODUCT = 'EDIT_PRODUCT';
+export const EDIT_CLOSE_PRODUCT = 'EDIT_CLOSE_PRODUCT';
+export const ADD_PRODUCT = 'ADD_PRODUCT';

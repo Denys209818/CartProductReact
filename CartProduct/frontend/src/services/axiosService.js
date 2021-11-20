@@ -31,6 +31,21 @@ class AxiosService
     {
         return axiosCreate.post('api/product/getcart', email);
     }
+
+    deleteItem = (id) => 
+    {
+        return axiosCreate.post('api/product/remcart', id);
+    }
+
+    addItemToCart = (data) => 
+    {
+        return axiosCreate.post('api/product/addtocart', data);
+    }
+
+    removeItemToCart = (data) => 
+    {
+        return axiosCreate.post('api/product/removetocart', data);
+    }
 }
 
 export default new AxiosService();

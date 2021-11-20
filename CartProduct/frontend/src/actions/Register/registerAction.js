@@ -1,5 +1,6 @@
 import { CLEAR_CART, REGISTER_USER } from "../../constants/reduxConstants";
 import axiosService from "../../services/axiosService";
+import { loginUser } from "../Login/loginAction";
 
 const registerAction = (data) => async (dispatch) => 
 {
@@ -11,6 +12,7 @@ const registerAction = (data) => async (dispatch) =>
                     dispatch({type: CLEAR_CART, payload: result.data});
                     dispatch({type: REGISTER_USER, payload: result.data});
                     localStorage.setItem('token', result.data.token);
+                    loginUser(result.data.token);
                     return Promise.resolve(result);
                 })
             .catch(error => 

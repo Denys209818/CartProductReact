@@ -1,4 +1,4 @@
-import { ADD_TO_CART, CREATE_LIST } from "../../constants/reduxConstants";
+import { ADD_TO_CART, CREATE_LIST, REMOVE_FROM_CART } from "../../constants/reduxConstants";
 import axiosService from "../../services/axiosService";
 
 
@@ -41,3 +41,18 @@ export const productAddItem = (model) => (dispatch) =>
     }
 
 export default productAction;
+
+
+export const removeFromCart = (id) => async (dispatch) => 
+{
+    try 
+    {
+        var {data} = await axiosService.deleteItem(id);
+        dispatch({type: REMOVE_FROM_CART, payload: data});
+        return Promise.resolve();
+    }
+    catch(ex) 
+    {
+        return Promise.reject(ex);
+    }
+}

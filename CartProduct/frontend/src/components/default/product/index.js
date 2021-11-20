@@ -20,17 +20,6 @@ const Product = () => {
         {label: 'Від дешевого до дорогого', value: 'price'},
     ];
 
-    useEffect(() => {
-        dispatch(productAction())
-        .then(data => {
-            setProducts(data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-        
-    }, []);
-
     const onSortChange = (event) => {
         const value = event.value;
 
@@ -137,12 +126,15 @@ const Product = () => {
 
     const header = renderHeader();
 
+    var data = useSelector(redux => redux.product);
+    
+
     return (
         <div className="row">
             <div className="mt-4 col-md-12">
                 <div className="dataview-demo">
                     <div className="card">
-                        <DataView emptyMessage="Немає продуктів" value={products} layout={layout} header={header}
+                        <DataView emptyMessage="Немає продуктів" value={data.products} layout={layout} header={header}
                             itemTemplate={itemTemplate} paginator rows={9}
                             sortOrder={sortOrder} sortField={sortField} />
                     </div>

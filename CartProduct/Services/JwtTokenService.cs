@@ -32,7 +32,8 @@ namespace CartProduct.Services
                 new Claim("name", user.Firstname),
                 new Claim("email", user.Email),
                 new Claim("surname", user.Secondname),
-                new Claim("phone", user.Phone)
+                new Claim("phone", user.Phone),
+                new Claim("username", user.Email)
             };
 
             var roles = _userManager.GetRolesAsync(user).Result;

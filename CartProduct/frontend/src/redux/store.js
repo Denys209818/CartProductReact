@@ -7,6 +7,8 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import userReducer from "./reducers/userReducer";
 import productReducer from "./reducers/productReducer";
 import cartReducer from "./reducers/cartReducer";
+import dragAndDropReducer from "./reducers/dragAndDropReducer";
+import editReducer from "./reducers/editReducer";
 
 
 
@@ -20,7 +22,9 @@ var rootReducer = combineReducers({
     user: userReducer,
     router: connectRouter(history),
     product: productReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    drag: dragAndDropReducer,
+    edit: editReducer
 });
 
 var store = createStore(rootReducer, 

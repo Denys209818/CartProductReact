@@ -20,7 +20,7 @@ namespace CartProduct.Data.Entities
         public string Description { get; set; }
         [Required, StringLength(255)]
         public string Code { get; set; }
-        [Required, StringLength(255)]
+        [StringLength(255)]
         public string Image { get; set; }
         [Required, StringLength(255)]
         public string Category { get; set; }

@@ -18,6 +18,11 @@ using CartProduct.Services;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
 
 namespace CartProduct
 {
@@ -74,6 +79,25 @@ namespace CartProduct
 
             services.AddAutoMapper(typeof(MyAutoMapper));
 
+            services.AddAuthentication((AuthenticationOptions opts) =>
+            {
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer((JwtBearerOptions opts) => {
+                opts.RequireHttpsMetadata = false;
+                opts.SaveToken = true;
+                opts.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.
+                    GetBytes(Configuration.GetValue<String>("PR_KEY"))),
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.AddFluentValidation(opts =>
             opts.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
@@ -93,6 +117,9 @@ namespace CartProduct
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.SeedAll();
 

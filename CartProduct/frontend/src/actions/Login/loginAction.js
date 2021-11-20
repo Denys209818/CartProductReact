@@ -1,4 +1,5 @@
 import { ADD_TO_CART, CLEAR_CART, LOGIN_USER } from "../../constants/reduxConstants";
+import axiosCreate from "../../services/axiosCreate";
 import axiosService from "../../services/axiosService";
 
 
@@ -10,7 +11,7 @@ const loginAction = (data) => (dispatch) =>
                 dispatch({type:CLEAR_CART});
                 dispatch({ type: LOGIN_USER, payload: result.data });
                 localStorage.setItem('token', result.data.token);
-
+                loginUser(result.data.token);
                 dispatch(getCartProducts(data));
                 return Promise.resolve(result.data);
             })
@@ -37,3 +38,13 @@ export const getCartProducts = (data) => (dispatch) => {
 }
 
 export default loginAction;
+
+export const loginUser = (token) => 
+{
+    if (token) {
+        axiosCreate.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        console.log(axiosCreate.defaults.headers.common['Authorization'] = `Bearer ${token}`);
+      } else {
+        delete axiosCreate.defaults.headers.common['Authorization'];
+      }
+}

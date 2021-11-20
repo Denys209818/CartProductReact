@@ -1,9 +1,11 @@
+import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router";
 import DefaultRoutes from "../../routes/DefaultRoutes";
 import Layout from "./Layout";
 
 
 const DefaultLayout = () => {
+    
     return(<>
     <Layout>
 
